@@ -1,1 +1,2 @@
-// here i will be posting about the python code 
+backend project
+initialized
