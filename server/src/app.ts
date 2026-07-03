@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
-
+//! importing Routes
+import authRoutes from "./routes/auth.routes";
 // @types/packageName
 const app = express();
 
@@ -18,6 +19,11 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
+//! using routes
+app.use("/api/v1/auth", authRoutes); // v1 thing is the versioning of the api
+// app.use('/api/v2/auth', authRoutes)
+
+//! path not found
 app.use((req: Request, res: Response, next: NextFunction) => {
   const message = ` cannot get ${req.method} on ${req.path}`;
 
