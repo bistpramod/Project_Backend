@@ -1,4 +1,4 @@
-class appError extends Error {
+class AppError extends Error {
     status : "error" | "fail";
     isOperation : boolean ; 
     constructor (
@@ -10,12 +10,12 @@ class appError extends Error {
         this.statusCode = statusCode; 
         this.isOperation = true;
         this.status = statusCode >= 500 ? "error" : "fail";
-        Error.captureStackTrace(this, appError);
+        Error.captureStackTrace(this, AppError);
     }
 }
 
 //! this code is used in all kind of projects so its like you can copy paste all this code
 
-export default appError;
+export default AppError;
 
 
