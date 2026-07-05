@@ -1,8 +1,17 @@
 import express, { Request, Response, NextFunction } from "express";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
+
+
 //! importing Routes
-import authRoutes from "./routes/auth.routes";
+
+import routes from "./routes"
+// import authRoutes from "./routes/auth.routes";
+// import userRoutes from "./routs/userRoutes"
 // @types/packageName
+
+
+
+//* creating app instance
 const app = express();
 
 //! using middlewares
@@ -20,7 +29,7 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
 });
 
 //! using routes
-app.use("/api/v1/auth", authRoutes); // v1 thing is the versioning of the api
+app.use("/api/v1/auth", routes); // v1 thing is the versioning of the api
 // app.use('/api/v2/auth', authRoutes)
 
 //! path not found
