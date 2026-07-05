@@ -17,7 +17,7 @@ export const errorHandler = (
   }
 
   res.status(statusCode).json ({
-    message, 
+    message,  // these are the responses sent by the app , when something error occurs
     status, 
     success,
      data : null ,

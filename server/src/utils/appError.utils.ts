@@ -17,3 +17,5 @@ class appError extends Error {
 //! this code is used in all kind of projects so its like you can copy paste all this code
 
 export default appError;
+
+

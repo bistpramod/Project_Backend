@@ -7,7 +7,7 @@ import appError from "../utils/appError.utils";
 // register
 
 export const register = async (
-  req: Request,
+  req: Request, // the types are defined , next because of middlewares used 
   res: Response,
   next: NextFunction,
 ) => {

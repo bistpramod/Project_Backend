@@ -1,3 +1,5 @@
+//! its the user details containg different values
+
 import mongoose from "mongoose";
 
 //* user schema

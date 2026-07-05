@@ -4,14 +4,14 @@ import bcrypt from "bcryptjs";
 export const hashPassword = async (password : string) =>{
     try {
 
-     //salt / why do we use salt 
+        //salt / why do we use salt 
 
-    //  const salt = await bcrypt.getSalt(10);
-    const salt = await bcrypt.genSalt(10);
-          //hash
+        //  const salt = await bcrypt.getSalt(10);
+        const salt = await bcrypt.genSalt(10);
+        //hash
 
-          const hash = await bcrypt.hash(password, salt);
-          return hash; 
+        const hash = await bcrypt.hash(password, salt);
+        return hash; 
 
     }
     catch(error){

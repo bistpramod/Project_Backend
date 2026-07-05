@@ -10,3 +10,6 @@ export const connectDatabase = (DB_URI: string) => {
       console.log(error);
     });
 };
+
+
+// it is for the database connection , and its working fine
