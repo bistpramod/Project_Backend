@@ -24,7 +24,7 @@ export const getAllBrands = async (
   }
 };
 
-// getting brand by id
+// creating brand 
 export const createBrand = async (
   req: Request,
   res: Response,

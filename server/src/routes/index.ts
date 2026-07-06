@@ -3,8 +3,7 @@ import express from "express";
 import authRoutes from "./auth.routes";
 import userRoutes from "./user.routes";
 import brandRoutes from "./brand.routes";
-
-// Added: brand route mounting so /brands endpoints are available through the main router.
+// each router has been imported from the required destination
 
 const router = express.Router();
 
