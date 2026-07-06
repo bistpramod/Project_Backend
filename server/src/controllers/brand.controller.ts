@@ -5,6 +5,9 @@ import AppError from "../utils/appError.utils";
 // its the brand controller
 
 // get all brands
+
+
+// ! THERE IS A DIFFERENT METHOD FOR TRY AND CATH
 export const getAllBrands = async (
   req: Request,
   res: Response,
