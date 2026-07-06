@@ -7,7 +7,7 @@ import AppError from "../utils/appError.utils";
 // get all brands
 
 
-// ! THERE IS A DIFFERENT METHOD FOR TRY AND CATH
+// ! THERE IS A DIFFERENT METHOD FOR TRY AND CATCH
 export const getAllBrands = async (
   req: Request,
   res: Response,

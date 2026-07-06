@@ -36,10 +36,7 @@ import mongoose from "mongoose";
 //       trim: true,
 //     },
    
-//     roles:{
-//       types:String, 
-//       enum : [ "ADMIN" , "SUPER ADMIN"]
-//     },
+//   
 //     phone: {
 //       type: String,
 //       maxLength: [10 , " phone number at most 10 digits long"], 
@@ -57,12 +54,12 @@ const brandSchema = new mongoose.Schema(
   {
     brand_name: {
       type: String,
-      required: true,
+      required: [true,"brand name is always required"],
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true,"brand email is always required"],
       unique: true,
       trim: true,
     },
