@@ -93,4 +93,23 @@ export  const getById = async (
 }
 
 
-// teacher pushes the code, i have to pull , then make a branch and do my thing
+//* delete user  -> pramod
+//? ready to make changed on this task 
+
+//! delete users 
+
+
+export const deleteUser = catchAsync(
+  async(req: Request, res: Response , next:NextFunction) =>{
+    const user = await User.findByIdAndDelete(req.params.id);
+    if(!user){
+      return next(new AppError(" user not found", 404))
+    }
+    res.status(200).json({
+      success:true,
+      message:"User deleted successfully",
+      status:"success"
+    });
+
+  }
+)

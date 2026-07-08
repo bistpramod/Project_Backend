@@ -24,7 +24,7 @@ export const register = async (
       throw new appError("full name is requred ", 400);
     }
     if (!email) {
-      throw new appError("email is requred ", 400);
+      throw new appError("email is requred ", 400); //! new method to throw the password
     }
     if (!password) {
       // we can still do like this in a traditional way , but when the conditions esceed too  much we have to minimize the code
