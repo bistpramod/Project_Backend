@@ -1,6 +1,6 @@
 import  express  from "express";
 
-import { getAllAdmins , getById , getAll} from "../controllers/user.controller";
+import { getAllAdmins , getById , getAll , deleteUser} from "../controllers/user.controller";
 
 const router = express.Router()
 //* get all users 
@@ -10,5 +10,8 @@ router.get('/admins', getAllAdmins)
 
 //* get user by id
 router.get("/:id", getById)
+//* delete user 
+router.delete("/:id", deleteUser);
+
 
 export default router
