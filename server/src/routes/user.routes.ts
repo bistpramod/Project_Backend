@@ -2,6 +2,9 @@ import  express  from "express";
 
 import { getAllAdmins , getById , getAll , deleteUser} from "../controllers/user.controller";
 
+
+
+
 const router = express.Router()
 //* get all users 
 

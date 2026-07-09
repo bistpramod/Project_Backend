@@ -1,6 +1,7 @@
 //! its the user details containg different values
 
 import mongoose from "mongoose";
+import { Role } from "../types/enum.types";
 
 //* user schema
 
@@ -27,9 +28,10 @@ const userSchema = new mongoose.Schema(
 
       trim: true,
     },
-    roles:{
-      types:String, 
-      enum : ["USER", "ADMIN" , "SUPER ADMIN"]
+   role: {
+      type: String,
+      enum: Object.values(Role),
+      default: Role.USER,
     },
     phone: {
       type: String,

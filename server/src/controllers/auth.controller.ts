@@ -15,6 +15,8 @@ export const register = async (
   try {
     //* body
     const { full_name, email, password } = req.body;
+    const file = req.file;
+    console.log(file)
 
     if (!full_name) {
       //   const error: any = new Error("Full name is required ");
