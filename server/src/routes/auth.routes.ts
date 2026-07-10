@@ -1,23 +1,15 @@
 import express from "express";
-import multer from "multer"
+import { uploader } from "../middlewares/multer.middlewares";
 import { login, register } from "../controllers/auth.controller";
-
-// multer upload instance
-const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
 
-//* register
-router.post("/register", upload.single("ProfileImage"),register)
+const upload = uploader();
 
 //* register
-router.post('/register', register)  // its just the router 
+router.post("/register", upload.single("profile_image"), register); // its just the router
 
 //* login
-router.post('/login', login)  
+router.post("/login", login);
 
-
-
-export default router; 
-
-    
+export default router;

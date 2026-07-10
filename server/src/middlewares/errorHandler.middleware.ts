@@ -9,18 +9,18 @@ export const errorHandler = (
   console.log(error);
   const message = error?.message ?? "internal err";
   let status = error?.status ?? "error";
-  let statusCode = error?.statusCode ?? 500 ;
-  const success = false ; 
-  if (error ?.cause?.code ===11000){
-    statusCode= 400;
-    status: "fail"
+  let statusCode = error?.statusCode ?? 500;
+  const success = false;
+  if (error?.cause?.code === 11000) {
+    statusCode = 400;
+    status = "fail";
   }
 
-  res.status(statusCode).json ({
-    message,  // these are the responses sent by the app , when something error occurs
-    status, 
+  res.status(statusCode).json({
+    message, // these are the responses sent by the app , when something error occurs
+    status,
     success,
-     data : null ,
-     originalError: error?.stack
-  })
+    data: null,
+    originalError: error?.stack,
+  });
 };
