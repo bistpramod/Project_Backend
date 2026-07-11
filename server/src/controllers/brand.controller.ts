@@ -5,16 +5,7 @@ import { catchAsync } from "../utils/catchAsync.utils";
 import { upload } from "../utils/cloudinary.utils";
 
 const uploadFolder = "/brands";
-/**
- * BRAND CONTROLLER
- * Handles all brand-related operations
- */
 
-/**
- * Create a new brand
- * @param req - Express request object
- * @param res - Express response object
- */
 export const create = catchAsync(async (req: Request, res: Response) => {
   const { name, description } = req.body;
   // req.file / files
@@ -40,14 +31,15 @@ export const create = catchAsync(async (req: Request, res: Response) => {
   //profile_image = {path:'',public_id:''}
   // profile_image = ''
 
-  brand.logo = {
-    path,
-    public_id,
-  };
+  // brand.logo = { path, public_id }; // wrong: brand was used before it was declared
 
   const brand = new Brand({
     name,
     description,
+    logo: {
+      path,
+      public_id,
+    },
   });
 
   // Save brand to database

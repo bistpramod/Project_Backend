@@ -15,7 +15,7 @@
 
 //! its the user details containg different values
 
-import mongoose from "mongoose";
+// import mongoose from "mongoose"; // wrong: duplicate import — mongoose is imported below with Schema and Document
 
 //* brand schema
 
