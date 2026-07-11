@@ -1,20 +1,17 @@
-import app from "./app"; 
-import { connectDatabase } from "./config/db.config"; // cuz its named export not default
-const PORT = 8080;
+import "dotenv/config";
+import app from "./app";
+import { connectDatabase } from "./config/db.config";
+import ENV_CONFIG from "./config/env.config";
 
+// dotenv.config()
 
+const PORT = ENV_CONFIG.PORT;
+const DB_URI = ENV_CONFIG.DB_URI;
 
-const DB_URI = "mongodb://localhost:27017/project_backend";
+// connect database
+connectDatabase(DB_URI);
 
-//? connect database
-connectDatabase(DB_URI)
-
-
-
-
-
-
-//* listen 
-app.listen(PORT , ()=> {
-    console.log(`server is running at http://localhost:${PORT}`)
-})
+// listen
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`);
+});
