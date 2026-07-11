@@ -50,37 +50,47 @@ import mongoose from "mongoose";
 
 
 //! updated brand Schema
-const brandSchema = new mongoose.Schema(
+import mongoose, { Schema, Document } from "mongoose";
+import ImageSchema from "./image.model";
+import { IImage } from "../types/global.types";
+
+//* Interface
+export interface IBrand extends Document {
+  name: string;
+  description?: string;
+  logo: IImage;
+}
+
+//* Brand Schema
+const brandSchema = new Schema<IBrand>(
   {
-    brand_name: {
+    name: {
       type: String,
-      required: [true,"brand name is always required"],
+      required: [true, "Brand name is required"],
       trim: true,
-    },
-    email: {
-      type: String,
-      required: [true,"brand email is always required"],
       unique: true,
-      trim: true,
+      minLength: 2,
+      maxLength: 100,
     },
-    phone: {
-      type: String,
-    },
+
     description: {
       type: String,
       trim: true,
+      minLength: 5,
+      maxLength: 500,
     },
+
     logo: {
-      type: String,
-      default: "",
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
+      type: ImageSchema,
+      required: [true, "Logo is required"],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  },
 );
 
-const Brand = mongoose.model("brand", brandSchema)
-export default  Brand;
+//* Brand Model
+const Brand = mongoose.model<IBrand>("Brand", brandSchema);
+
+export default Brand;
