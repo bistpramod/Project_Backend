@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model";
 import { comparePassword, hashPassword } from "../utils/bcrypt.utils";
 import appError from "../utils/appError.utils";
+import { upload } from "../utils/cloudinary.utils";
+
+const uploadFolder = "/profile_images";
 
 // its the controller
 
@@ -44,6 +47,18 @@ export const register = async (
 
     // hash password
     // handle profile image upload
+      if (file) {
+      //* upload to cloudinary
+      const { path, public_id } = await upload(file, uploadFolder);
+
+      //profile_image = {path:'',public_id:''}
+      // profile_image = ''
+
+      user.profile_image = {
+        path,
+        public_id,
+      };
+    }
 
     //! save the suser
     await user.save();

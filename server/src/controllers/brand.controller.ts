@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import Brand from "../models/brand.model";
 import appError from "../utils/appError.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
+import { upload } from "../utils/cloudinary.utils";
 
+const uploadFolder = "/brands";
 /**
  * BRAND CONTROLLER
  * Handles all brand-related operations
@@ -15,10 +17,16 @@ import { catchAsync } from "../utils/catchAsync.utils";
  */
 export const create = catchAsync(async (req: Request, res: Response) => {
   const { name, description } = req.body;
+  // req.file / files
+  const file = req.file;
   // TODO: Handle req.file / files for logo upload
 
   if (!name) {
     throw new appError("name required.", 400);
+  }
+
+  if (!file) {
+    throw new appError("logo is required.", 400);
   }
 
   const existingBrand = await Brand.findOne({ name });
@@ -26,6 +34,16 @@ export const create = catchAsync(async (req: Request, res: Response) => {
   if (existingBrand) {
     throw new appError("Brand already exists.", 400);
   }
+   //* upload to cloudinary
+  const { path, public_id } = await upload(file, uploadFolder);
+
+  //profile_image = {path:'',public_id:''}
+  // profile_image = ''
+
+  brand.logo = {
+    path,
+    public_id,
+  };
 
   const brand = new Brand({
     name,
