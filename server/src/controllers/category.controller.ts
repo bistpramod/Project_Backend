@@ -98,6 +98,10 @@ export const update = catchAsync(
 //* delete  -> shristi
 export const remove = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+
+    // authentication 
+    
+
     const { id } = req.params;
     const category = await Category.findByIdAndDelete({ _id: id });
 
