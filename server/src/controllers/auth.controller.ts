@@ -68,6 +68,15 @@ export const register = async (
 
     //! save the suser
     await user.save();
+    // converting mongoose tdoc to js obkject 
+
+    const { password : user_pass , ...rest} = user.toObject()
+
+    // //* success response 
+    // sendResponse(res, {
+    //   message: "Account created ",
+
+    // })
 
     //* success response
     res.status(201).json({
@@ -111,7 +120,7 @@ export const login = async (
     }
 
     //todo: generate jwt token
-    //todo: generate jwt token
+    
     const payload: IJwtPayload = {
       _id: user._id,
       email: user.email,

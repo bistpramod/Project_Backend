@@ -17,3 +17,7 @@ export interface IJwtPayload {
   email: string;
   role: Role;
 }
+export interface IJwtReturn extends IJwtPayload{
+  iat:number;
+  exp:number;
+}

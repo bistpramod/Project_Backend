@@ -1,17 +1,30 @@
 import express from "express";
 import {
-  
-  createBrand,
+  create,
+  deleteBrand,
   getAllBrands,
   getBrandById,
-
+  update,
 } from "../controllers/brand.controller";
+import { uploader } from "../middlewares/multer.middlewares";
 
-// not update delete and update features 
-
+const upload = uploader();
 
 const router = express.Router();
-router.route("/").get(getAllBrands).post(createBrand);
-router.route("/:id").get(getBrandById)
+
+// getAll
+router.get("/", getAllBrands);
+
+// getById
+router.get("/:id", getBrandById);
+
+// create
+router.post("/", upload.single("logo"), create);
+
+// update
+router.put("/:id", upload.single("logo"), update);
+
+// delete
+router.delete("/:id", deleteBrand);
 
 export default router;

@@ -42,7 +42,7 @@ export const create = catchAsync(async (req: Request, res: Response) => {
     },
   });
 
-  // Save brand to database
+  //* Save brand to database
   await brand.save();
 
   res.status(201).json({
