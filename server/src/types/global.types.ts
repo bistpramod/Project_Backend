@@ -20,4 +20,4 @@ export interface IJwtPayload {
 export interface IJwtReturn extends IJwtPayload{
   iat:number;
   exp:number;
-}
+} 
