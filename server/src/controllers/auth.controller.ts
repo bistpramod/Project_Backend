@@ -9,7 +9,7 @@ import ENV_CONFIG from "../config/env.config";
 import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
 import AppError from "../utils/appError.utils";
-
+import { sendEmail } from "../utils/emailServer.utils";
 const uploadFolder = "/profile_images";
 
 // register
@@ -56,7 +56,15 @@ export const register = async (
     }
 
     await user.save();
-
+//* send account created email
+    sendEmail({
+      to: user.email,
+      subject: "Account created",
+      html: `<div>
+      <h2>Account created</h2>
+      <p>Hello ${user.full_name}, welcome to out service</p>
+      </div>`,
+    });
     // Remove password before sending response
     const { password: user_pass, ...rest } = user.toObject();
 

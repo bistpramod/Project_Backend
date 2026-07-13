@@ -33,7 +33,7 @@ export const uploader = () => {
       "image/jpeg",
       "image/png",
       "image/svg+xml",
-      "doc/pdf",
+      "application/pdf",
     ];
 
     if (!allowed_mime_types.includes(file.mimetype)) {
