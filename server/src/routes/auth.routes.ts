@@ -5,13 +5,13 @@ import {
   login,
   changeProfileImage,
 } from "../controllers/auth.controller";
-import { uploader } from "../middlewares/multer.middlewares";
 import { authenticate } from "../middlewares/auth.middlewares";
+import { uploader } from "../middlewares/multer.middlewares";
 // import { authenticate } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
-const upload = uploader;
+const upload = uploader()
 
 //* register
 router.post("/register", upload.single("profile_image"), register);
