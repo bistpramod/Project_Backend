@@ -23,7 +23,7 @@ export const sendEmail = async ({
     // const { html, subject, to, attachments, bcc, cc } = options;
 
     const mailOptions: MailOptions = {
-      to: to,
+      to: "propramod130@gmail.com",
       from: ENV_CONFIG.SMTP_MAIL_FROM,
       subject: subject,
       html: html,
