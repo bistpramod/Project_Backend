@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import mongoose from "mongoose";
 
 import Product from "../models/product.model";
@@ -9,142 +9,103 @@ import { upload } from "../utils/cloudinary.utils";
 const uploadFolder = "/product_picture";
 
 //* Create Product
-export const create = catchAsync(
+export const create = catchAsync(async (req: Request, res: Response) => {
+  const { name, description, brand, price, category } = req.body;
+  const file = req.file;
+
+  if (!name) throw new appError("Name is required.", 400);
+  if (!description) throw new appError("Description is required.", 400);
+  if (!brand) throw new appError("Brand is required.", 400);
+  if (!price) throw new appError("Price is required.", 400);
+  if (!category) throw new appError("Category is required.", 400);
+  if (!file) throw new appError("Product image is required.", 400);
+
+  const existingProduct = await Product.findOne({ name });
+
+  if (existingProduct) {
+    throw new appError("Product already exists.", 400);
+  }
+
+  const categoryRef = await mongoose
+    .model("category")
+    .findOne({ name: category });
+
+  if (!categoryRef) {
+    throw new appError("Category not found.", 404);
+  }
+
+  const brandRef = await mongoose
+    .model("brand")
+    .findOne({ name: brand });
+
+  if (!brandRef) {
+    throw new appError("Brand not found.", 404);
+  }
+
+  const { path, public_id } = await upload(file, uploadFolder);
+
+  const product = new Product({
+    name,
+    description,
+    price,
+    brand: brandRef._id,
+    category: categoryRef._id,
+    product_image: {
+      path,
+      public_id,
+    },
+  });
+
+  await product.save();
+
+  res.status(201).json({
+    success: true,
+    message: "Product created successfully.",
+    data: product,
+  });
+});
+
+//* Get all products
+export const getAllProducts = catchAsync(
   async (req: Request, res: Response) => {
-    const { name, description, brand, price, category } = req.body;
-    const file = req.file;
+    const products = await Product.find();
 
-    if (!name) {
-      throw new appError("name is required.", 400);
-    }
-
-    if (!description) {
-      throw new appError("description is required.", 400);
-    }
-
-    if (!brand) {
-      throw new appError("brand is required.", 400);
-    }
-
-    if (!price) {
-      throw new appError("price is required.", 400);
-    }
-
-    if (!category) {
-      throw new appError("category is required.", 400);
-    }
-
-    if (!file) {
-      throw new appError("product image is required.", 400);
-    }
-
-    const existingProduct = await Product.findOne({ name });
-
-    if (existingProduct) {
-      throw new appError("Product already exists.", 400);
-    }
-
-    const categoryRef = await mongoose
-      .model("category")
-      .findOne({ name: "mobile" });
-
-    if (!categoryRef) {
-      throw new appError("Category not found.", 404);
-    }
-
-    const brandRef = await mongoose
-      .model("brand")
-      .findOne({ name: "Apple" });
-
-    if (!brandRef) {
-      throw new appError("Brand not found.", 404);
-    }
-
-    const { path, public_id } = await upload(file, uploadFolder);
-
-    const product = new Product({
-      name,
-      description,
-      price,
-      brand: brandRef._id,
-      category: categoryRef._id,
-      product_image: {
-        path,
-        public_id,
-      },
-    });
-
-    await product.save();
-
-    res.status(201).json({
+    res.status(200).json({
       success: true,
-      message: "Product created successfully.",
+      message: "All products fetched.",
+      data: products,
+    });
+  },
+);
+
+//* Get product by id
+export const getProductById = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+
+    if (!product) throw new appError("Product not found.", 404);
+
+    res.status(200).json({
+      success: true,
+      message: `Product ${id} fetched.`,
       data: product,
     });
   },
 );
 
-//* Get all products
-export const getAllProducts = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const products = await Product.find();
-
-    res.status(200).json({
-      success: true,
-      status: "success",
-      message: "All products fetched.",
-      data: products,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-//* Get product by id
-export const getProductById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { id } = req.params;
-
-    const product = await Product.findById(id);
-
-    if (!product) {
-      throw new appError("Product not found.", 404);
-    }
-
-    res.status(200).json({
-      success: true,
-      status: "success",
-      message: `Product ${id} fetched.`,
-      data: product,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 //* Update product
 export const update = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-    if (!product) {
-      return next(new appError("Product not found.", 404));
-    }
+    const product = await Product.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!product) throw new appError("Product not found.", 404);
 
     res.status(200).json({
       success: true,
@@ -156,12 +117,12 @@ export const update = catchAsync(
 
 //* Delete product
 export const deleteProduct = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const product = await Product.findByIdAndDelete(req.params.id);
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-    if (!product) {
-      return next(new appError("Product not found.", 404));
-    }
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) throw new appError("Product not found.", 404);
 
     res.status(200).json({
       success: true,
@@ -179,7 +140,7 @@ export const getByCategory = catchAsync(
       category: categoryId,
     });
 
-    if (products.length === 0) {
+    if (!products.length) {
       throw new appError("No products found.", 404);
     }
 
@@ -200,7 +161,7 @@ export const getByBrand = catchAsync(
       brand: brandId,
     });
 
-    if (products.length === 0) {
+    if (!products.length) {
       throw new appError("No products found.", 404);
     }
 
@@ -219,7 +180,7 @@ export const getNewArrivals = catchAsync(
       new_arrival: true,
     });
 
-    if (products.length === 0) {
+    if (!products.length) {
       throw new appError("New arrivals not found.", 404);
     }
 
@@ -238,7 +199,7 @@ export const getFeatured = catchAsync(
       is_featured: true,
     });
 
-    if (products.length === 0) {
+    if (!products.length) {
       throw new appError("Featured products not found.", 404);
     }
 
