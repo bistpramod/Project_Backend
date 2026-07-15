@@ -12,7 +12,7 @@ export const authenticate = (roles?: Role[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       // Authorization header  / cookies
-      //* 1. get access_token
+      //* get access_token
       const cookies = req.cookies;
       const access_token = cookies["access_token"];
 
@@ -20,13 +20,13 @@ export const authenticate = (roles?: Role[]) => {
         throw new AppError("Unauthorized.Login required.", 401);
       }
 
-      //* 2. verify access token
+      //*  verify access token
       const decoded_data = verifyJwtToken(access_token);
       if (!decoded_data) {
         throw new AppError("Invalid token.Login required.", 401);
       }
 
-      //* 3. check token expiry
+      //*  check token expiry
       if (decoded_data.exp * 1000 <= Date.now()) {
         //* clear cookie
         res.clearCookie("access_token", {
@@ -38,7 +38,7 @@ export const authenticate = (roles?: Role[]) => {
         throw new AppError("Token expired.Access denied.", 401);
       }
 
-      //* 4.check role
+      //* check role
       if (roles && roles.length > 0 && !roles.includes(decoded_data.role)) {
         throw new AppError("Unauthorized.Access denied.", 403);
       }
