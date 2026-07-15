@@ -10,12 +10,12 @@ import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
 import AppError from "../utils/appError.utils";
 import { sendEmail } from "../utils/emailServer.utils";
-
-const uploadFolder = "/profile_images";
 import {
   accountCreatedHtml,
   newLoginDetectedHtml,
 } from "../utils/emailTemplate.utils";
+
+const uploadFolder = "/profile_images";
 
 // register
 export const register = async (
@@ -26,8 +26,6 @@ export const register = async (
   try {
     const { full_name, email, password } = req.body;
     const file = req.file;
-
-   
 
     const user = new User({ email, password, full_name });
 
@@ -46,15 +44,18 @@ export const register = async (
     }
 
     await user.save();
-//* send account created email
-    sendEmail({
+
+    //* send account created email
+    await sendEmail({
       to: user.email,
       subject: "Account created",
       html: accountCreatedHtml({
         full_name: user.full_name,
         email: user.email,
         createdAt: user.createdAt,
+      }),
     });
+
     // Remove password before sending response
     const { password: user_pass, ...rest } = user.toObject();
 
@@ -79,7 +80,7 @@ export const login = async (
     const { email, password } = req.body;
 
     if (!email) {
-      throw new appError(" email is required", 400);
+      throw new appError("email is required", 400);
     }
 
     if (!password) {
@@ -89,37 +90,27 @@ export const login = async (
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new appError("credentialsdoes not match ", 400);
-    } 
+      throw new appError("credentials does not match", 400);
+    }
 
     //* compare password
     const isPassMatched = await comparePassword(password, user.password);
 
     if (!isPassMatched) {
-      throw new appError(" credentials do not match at all . ", 400);
+      throw new appError("credentials do not match.", 400);
     }
 
-    //* send login data / info
-    sendEmail({
-
-      to:user.email,
-      subject:"login detected",
-      html: newLoginDetectedHtml({
-        full_name: user.full_name,
-      })
-    })
-     //* send login detected email
-    sendEmail({
+    //* send login detected email
+    await sendEmail({
       to: user.email,
       subject: "Login Detected",
       html: newLoginDetectedHtml({
         full_name: user.full_name,
         email: user.email,
-        loginTime: new Date(Date.now()),
-        device: req.headers["user-agent"]!!,
+        loginTime: new Date(),
+        device: req.headers["user-agent"] as string,
       }),
     });
-
 
     // Remove password before sending response
     const { password: user_pass, ...rest } = user.toObject();
@@ -134,8 +125,8 @@ export const login = async (
     const access_token = generateJwtToken(payload);
 
     res.cookie("access_token", access_token, {
-      httpOnly: ENV_CONFIG.NODE_ENV === "development" ? false : true,
-      secure: ENV_CONFIG.NODE_ENV === "development" ? false : true,
+      httpOnly: ENV_CONFIG.NODE_ENV !== "development",
+      secure: ENV_CONFIG.NODE_ENV !== "development",
       maxAge: 7 * 24 * 60 * 60 * 1000,
       sameSite: ENV_CONFIG.NODE_ENV === "development" ? "lax" : "none",
     });

@@ -1,3 +1,5 @@
+// Using Cloudinary v2 and application env config values.
+// Ensure `env.config.ts` exports required CLOUDINARY_* variables.
 import { v2 as cloudinary } from "cloudinary";
 import ENV_CONFIG from "./env.config";
 

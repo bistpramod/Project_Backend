@@ -1,13 +1,15 @@
 import express from "express";
-import { uploader } from "../middlewares/multer.middleware";
+// Fixed import: middleware filename is `multer.middlewares.ts` (plural).
+import { uploader } from "../middlewares/multer.middlewares";
 import {
   register,
   login,
   changeProfileImage,
 } from "../controllers/auth.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+// import { authenticate } from "../middlewares/auth.middleware";
 import { validate } from "../middlewares/validator.middleware";
 import { registerUserSchema } from "../validators/auth.validator";
+import { authenticate } from "../middlewares/auth.middlewares";
 
 const router = express.Router();
 

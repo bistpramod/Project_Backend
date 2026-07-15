@@ -8,7 +8,9 @@ const ENV_CONFIG = {
   FRONT_END_URL: process.env.FRONT_END_URL,
 
   //* Database
-  DB_URI: process.env.DB_URI!!,
+  // Assert non-null for required env vars. Changed from '!!' to '!'
+  // to use TypeScript non-null assertion operator instead of double-bang.
+  DB_URI: process.env.DB_URI!,
 
   //* cloudinary
   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
@@ -16,8 +18,9 @@ const ENV_CONFIG = {
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
 
   //* jwt
-  JWT_SECRET: process.env.JWT_SECRET!!,
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN!!,
+  // JWT settings are required — use non-null assertion operator '!'.
+  JWT_SECRET: process.env.JWT_SECRET!,
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN!,
 
   //* cookie
 

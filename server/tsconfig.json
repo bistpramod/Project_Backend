@@ -6,7 +6,10 @@
 
     "module": "commonjs",
     "target": "es2020",
-    "types": [],
+    // Include Node.js type definitions so dev tools (ts-node-dev, mocha, etc.)
+    // can resolve global Node types like `process` and `Buffer`.
+    "types": ["node"],
+    "lib": ["esnext"],
 
     // For nodejs:
     // "lib": ["esnext"],
