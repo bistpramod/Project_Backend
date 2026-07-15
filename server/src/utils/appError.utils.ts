@@ -1,21 +1,19 @@
 class AppError extends Error {
-    status : "error" | "fail";
-    isOperation : boolean ; 
-    constructor (
-        public message : string, 
-        public statusCode: number, 
-
-    ){
-        super(message);
-        this.statusCode = statusCode; 
-        this.isOperation = true;
-        this.status = statusCode >= 500 ? "error" : "fail";
-        Error.captureStackTrace(this, AppError);
-    }
+  status: "error" | "fail";
+  isOperation: boolean;
+  constructor(
+    public message: string,
+    public statusCode: number,
+    public errors?: any[],
+  ) {
+    super(message);
+    this.statusCode = statusCode;
+    this.status = statusCode >= 400 && statusCode < 500 ? "fail" : "error";
+    this.isOperation = true;
+    this.errors = errors;
+    Error.captureStackTrace(this, AppError);
+  }
 }
 
-//! this code is used in all kind of projects so its like you can copy paste all this code
-
 export default AppError;
-
-
+//! this code is used in all kind of projects so its like you can copy paste all this code

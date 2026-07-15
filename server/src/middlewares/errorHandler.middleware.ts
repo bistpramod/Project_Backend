@@ -7,20 +7,22 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   console.log(error);
-  const message = error?.message ?? "internal err";
+  const message = error?.message ?? "Internal server error";
   let status = error?.status ?? "error";
   let statusCode = error?.statusCode ?? 500;
   const success = false;
+
   if (error?.cause?.code === 11000) {
     statusCode = 400;
     status = "fail";
   }
 
   res.status(statusCode).json({
-    message, // these are the responses sent by the app , when something error occurs
-    status,
+    message,
     success,
+    status,
     data: null,
-    originalError: error?.stack,
+    details: error?.errors ?? null,
+    original_error: error?.stack,
   });
 };

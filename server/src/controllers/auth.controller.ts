@@ -10,7 +10,12 @@ import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
 import AppError from "../utils/appError.utils";
 import { sendEmail } from "../utils/emailServer.utils";
+
 const uploadFolder = "/profile_images";
+import {
+  accountCreatedHtml,
+  newLoginDetectedHtml,
+} from "../utils/emailTemplate.utils";
 
 // register
 export const register = async (
@@ -22,22 +27,7 @@ export const register = async (
     const { full_name, email, password } = req.body;
     const file = req.file;
 
-    console.log(file);
-
-    if (!full_name) {
-      throw new appError("full name is requred ", 400);
-    }
-
-    if (!email) {
-      throw new appError("email is requred ", 400);
-    }
-
-    if (!password) {
-      const error: any = new Error("password is required ");
-      error.statusCode = 400;
-      error.status = "fail";
-      throw error;
-    }
+   
 
     const user = new User({ email, password, full_name });
 
@@ -60,10 +50,10 @@ export const register = async (
     sendEmail({
       to: user.email,
       subject: "Account created",
-      html: `<div>
-      <h2>Account created</h2>
-      <p>Hello ${user.full_name}, welcome to out service</p>
-      </div>`,
+      html: accountCreatedHtml({
+        full_name: user.full_name,
+        email: user.email,
+        createdAt: user.createdAt,
     });
     // Remove password before sending response
     const { password: user_pass, ...rest } = user.toObject();
@@ -100,7 +90,7 @@ export const login = async (
 
     if (!user) {
       throw new appError("credentialsdoes not match ", 400);
-    }
+    } 
 
     //* compare password
     const isPassMatched = await comparePassword(password, user.password);
@@ -108,6 +98,28 @@ export const login = async (
     if (!isPassMatched) {
       throw new appError(" credentials do not match at all . ", 400);
     }
+
+    //* send login data / info
+    sendEmail({
+
+      to:user.email,
+      subject:"login detected",
+      html: newLoginDetectedHtml({
+        full_name: user.full_name,
+      })
+    })
+     //* send login detected email
+    sendEmail({
+      to: user.email,
+      subject: "Login Detected",
+      html: newLoginDetectedHtml({
+        full_name: user.full_name,
+        email: user.email,
+        loginTime: new Date(Date.now()),
+        device: req.headers["user-agent"]!!,
+      }),
+    });
+
 
     // Remove password before sending response
     const { password: user_pass, ...rest } = user.toObject();
