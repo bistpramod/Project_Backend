@@ -1,0 +1,88 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> /MediaBox [0 0 612 792] /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+5 0 obj
+<< /Length 4512 >>
+stream
+BT /F1 12 Tf 50 750 Td (Project Backend Flow) Tj ET
+BT /F1 12 Tf 50 734 Td () Tj ET
+BT /F1 12 Tf 50 718 Td (1. Entry Point \(server/src/server.ts\)) Tj ET
+BT /F1 12 Tf 50 702 Td (   - Loads environment variables and database settings.) Tj ET
+BT /F1 12 Tf 50 686 Td (   - Connects to MongoDB using connectDatabase\(DB_URI\).) Tj ET
+BT /F1 12 Tf 50 670 Td (   - Starts the Express app on the configured PORT.) Tj ET
+BT /F1 12 Tf 50 654 Td (   - Verifies mail server connection after startup.) Tj ET
+BT /F1 12 Tf 50 638 Td () Tj ET
+BT /F1 12 Tf 50 622 Td (2. App Setup \(server/src/app.ts\)) Tj ET
+BT /F1 12 Tf 50 606 Td (   - Creates Express app instance.) Tj ET
+BT /F1 12 Tf 50 590 Td (   - Applies JSON body parser and cookie parser middleware.) Tj ET
+BT /F1 12 Tf 50 574 Td (   - Defines health check route at GET /.) Tj ET
+BT /F1 12 Tf 50 558 Td (   - Mounts main API routes under /api/v1/auth.) Tj ET
+BT /F1 12 Tf 50 542 Td (   - Uses a 404 handler for unknown routes.) Tj ET
+BT /F1 12 Tf 50 526 Td (   - Uses the global errorHandler middleware.) Tj ET
+BT /F1 12 Tf 50 510 Td () Tj ET
+BT /F1 12 Tf 50 494 Td (3. Main Routing \(server/src/routes/index.ts\)) Tj ET
+BT /F1 12 Tf 50 478 Td (   - Registers auth, user, brand, and category routers.) Tj ET
+BT /F1 12 Tf 50 462 Td (   - Each router defines its own endpoints and controllers.) Tj ET
+BT /F1 12 Tf 50 446 Td (   - Note: product.routes.ts is defined separately and should be imported) Tj ET
+BT /F1 12 Tf 50 430 Td (     into this file to make /api/v1/products available.) Tj ET
+BT /F1 12 Tf 50 414 Td () Tj ET
+BT /F1 12 Tf 50 398 Td (4. Product Routing \(server/src/routes/product.routes.ts\)) Tj ET
+BT /F1 12 Tf 50 382 Td (   - Defines product endpoints: GET /, GET /new_arrivals, GET /is_featured,) Tj ET
+BT /F1 12 Tf 50 366 Td (     GET /:id, GET /brand/:brandId, GET /category/:categoryId, POST /,) Tj ET
+BT /F1 12 Tf 50 350 Td (     PUT /:id, DELETE /:id.) Tj ET
+BT /F1 12 Tf 50 334 Td (   - Uses multer upload.fields\(\) for cover_image and images.) Tj ET
+BT /F1 12 Tf 50 318 Td (   - Protects create, update, and delete with authenticate\(All_Admins\).) Tj ET
+BT /F1 12 Tf 50 302 Td () Tj ET
+BT /F1 12 Tf 50 286 Td (5. Product Controller \(server/src/controllers/product.controller.ts\)) Tj ET
+BT /F1 12 Tf 50 270 Td (   - create\(\): validates body fields and required cover_image.) Tj ET
+BT /F1 12 Tf 50 254 Td (   - Looks up brand and category by name before saving.) Tj ET
+BT /F1 12 Tf 50 238 Td (   - Uploads cover_image and images to Cloudinary via upload\(\).) Tj ET
+BT /F1 12 Tf 50 222 Td (   - Saves the Product document with cover_image and images arrays.) Tj ET
+BT /F1 12 Tf 50 206 Td (   - getAllProducts\(\): returns all product documents.) Tj ET
+BT /F1 12 Tf 50 190 Td (   - getProductById\(\): returns a specific product by ID.) Tj ET
+BT /F1 12 Tf 50 174 Td (   - update\(\): updates the product document by ID.) Tj ET
+BT /F1 12 Tf 50 158 Td (   - deleteProduct\(\): removes media from Cloudinary and deletes the product.) Tj ET
+BT /F1 12 Tf 50 142 Td () Tj ET
+BT /F1 12 Tf 50 126 Td (6. Middleware and Utilities) Tj ET
+BT /F1 12 Tf 50 110 Td (   - auth.middlewares.ts handles user authentication and role checks.) Tj ET
+BT /F1 12 Tf 50 94 Td (   - multer.middlewares.ts handles file uploads from multipart/form-data.) Tj ET
+BT /F1 12 Tf 50 78 Td (   - errorHandler.middleware.ts catches and formats errors consistently.) Tj ET
+BT /F1 12 Tf 50 62 Td (   - cloudinary.utils.ts handles image upload and deletion to Cloudinary.) Tj ET
+BT /F1 12 Tf 50 46 Td () Tj ET
+BT /F1 12 Tf 50 30 Td (7. Data Flow for Create Product) Tj ET
+BT /F1 12 Tf 50 14 Td (   - Client sends POST /api/v1/products with form-data and files.) Tj ET
+BT /F1 12 Tf 50 -2 Td (   - multer parses cover_image+images into req.files.) Tj ET
+BT /F1 12 Tf 50 -18 Td (   - authenticate\(All_Admins\) checks admin permissions.) Tj ET
+BT /F1 12 Tf 50 -34 Td (   - Controller validates fields and uploads media.) Tj ET
+BT /F1 12 Tf 50 -50 Td (   - Product is saved and JSON response is returned.) Tj ET
+BT /F1 12 Tf 50 -66 Td () Tj ET
+BT /F1 12 Tf 50 -82 Td (8. Important Notes) Tj ET
+BT /F1 12 Tf 50 -98 Td (   - product.routes.ts needs to be imported into routes/index.ts.) Tj ET
+BT /F1 12 Tf 50 -114 Td (   - cover_image is required; images are optional up to 5 files.) Tj ET
+BT /F1 12 Tf 50 -130 Td (   - The Product controller currently uses Promise.allSettled for images.) Tj ET
+BT /F1 12 Tf 50 -146 Td (   - Server version is Express 5 with TypeScript support.) Tj ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000309 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+4873
+%%EOF

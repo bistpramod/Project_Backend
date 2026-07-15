@@ -1,14 +1,14 @@
-import express from "express";
+import { Router } from "express";
 
 import {
   create,
+  deleteProduct,
   getAllProducts,
   getByBrand,
   getByCategory,
-  getProductById,
   getFeatured,
   getNewArrivals,
-  deleteProduct,
+  getProductById,
   update,
 } from "../controllers/product.controller";
 
@@ -16,42 +16,62 @@ import { uploader } from "../middlewares/multer.middlewares";
 import { authenticate } from "../middlewares/auth.middlewares";
 import { All_Admins } from "../types/enum.types";
 
-// import { uploader } from "../middlewares/multer.middleware";
-// import { authenticate } from "../middlewares/auth.middleware";
-
-const router = express.Router();
+const router = Router();
 const upload = uploader();
 
+// getAll
 router.get("/", getAllProducts);
 
+// getNewArrivals
 router.get("/new_arrivals", getNewArrivals);
 
+// getFeatured
 router.get("/is_featured", getFeatured);
 
+// getById
 router.get("/:id", getProductById);
 
+// getByBrand
+router.get("/brand/:brandId", getByBrand);
+
+// getByCategory
+router.get("/category/:categoryId", getByCategory);
+
+// create
 router.post(
   "/",
-  upload.single("cover_image"),
+  upload.fields([
+    {
+      name: "cover_image",
+      maxCount: 1,
+    },
+    {
+      name: "images",
+      maxCount: 5,
+    },
+  ]),
   authenticate(All_Admins),
   create,
 );
 
+// update
 router.put(
   "/:id",
-  upload.single("cover_image"),
+  upload.fields([
+    {
+      name: "cover_image",
+      maxCount: 1,
+    },
+    {
+      name: "images",
+      maxCount: 5,
+    },
+  ]),
   authenticate(All_Admins),
   update,
 );
 
-router.delete(
-  "/:id",
-  authenticate(All_Admins),
-  deleteProduct,
-);
-
-router.get("/brand/:brandId", getByBrand);
-
-router.get("/category/:categoryId", getByCategory);
+// delete
+router.delete("/:id", authenticate(All_Admins), deleteProduct);
 
 export default router;
