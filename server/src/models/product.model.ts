@@ -21,9 +21,9 @@ const productSchema = new mongoose.Schema(
       minLength: 30,
       maxLength: 500,
     },
-    cover_image: {
+    product_image: {
       type: ImageSchema,
-      required: [true, "cover image is required"],
+      required: [true, "product image is required"],
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,

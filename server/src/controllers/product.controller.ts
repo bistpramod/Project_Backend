@@ -68,7 +68,7 @@ export const create = catchAsync(
       price,
       brand: brandRef._id,
       category: categoryRef._id,
-      cover_image: {
+      product_image: {
         path,
         public_id,
       },
