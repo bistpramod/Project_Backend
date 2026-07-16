@@ -225,4 +225,57 @@ export const deleteProduct = catchAsync(
 //   },
 // );
 
+export const createProduct = create;
+export const getAll = getAllProducts;
+export const getById = getProductById;
+export const remove = deleteProduct;
+
+export const getFeatured = catchAsync(async (req: Request, res: Response) => {
+  const products = await Product.find({ is_featured: true });
+  res.status(200).json({
+    success: true,
+    message: "Featured products fetched.",
+    data: products,
+  });
+});
+
+export const getNewArrivals = catchAsync(async (req: Request, res: Response) => {
+  const products = await Product.find({ new_arrival: true });
+  res.status(200).json({
+    success: true,
+    message: "New arrival products fetched.",
+    data: products,
+  });
+});
+
+export const getByBrand = catchAsync(async (req: Request, res: Response) => {
+  const { brandId } = req.params;
+  const products = await Product.find({ brand: brandId });
+
+  if (!products.length) {
+    throw new appError("No products found for this brand.", 404);
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Products fetched by brand.",
+    data: products,
+  });
+});
+
+export const getByCategory = catchAsync(async (req: Request, res: Response) => {
+  const { categoryId } = req.params;
+  const products = await Product.find({ category: categoryId });
+
+  if (!products.length) {
+    throw new appError("No products found for this category.", 404);
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Products fetched by category.",
+    data: products,
+  });
+});
+
 

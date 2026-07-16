@@ -13,18 +13,18 @@ const authenticate = (roles) => {
     return (req, res, next) => {
         try {
             // Authorization header  / cookies
-            //* 1. get access_token
+            //* get access_token
             const cookies = req.cookies;
             const access_token = cookies["access_token"];
             if (!access_token) {
                 throw new appError_utils_1.default("Unauthorized.Login required.", 401);
             }
-            //* 2. verify access token
+            //*  verify access token
             const decoded_data = (0, jwt_utils_1.verifyJwtToken)(access_token);
             if (!decoded_data) {
                 throw new appError_utils_1.default("Invalid token.Login required.", 401);
             }
-            //* 3. check token expiry
+            //*  check token expiry
             if (decoded_data.exp * 1000 <= Date.now()) {
                 //* clear cookie
                 res.clearCookie("access_token", {
@@ -35,7 +35,7 @@ const authenticate = (roles) => {
                 });
                 throw new appError_utils_1.default("Token expired.Access denied.", 401);
             }
-            //* 4.check role
+            //* check role
             if (roles && roles.length > 0 && !roles.includes(decoded_data.role)) {
                 throw new appError_utils_1.default("Unauthorized.Access denied.", 403);
             }

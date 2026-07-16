@@ -26,7 +26,7 @@ const productSchema = new mongoose_1.default.Schema({
     },
     cover_image: {
         type: image_model_1.default,
-        required: [true, "cover image is required"],
+        required: [true, "product image is required"],
     },
     category: {
         type: mongoose_1.default.Schema.Types.ObjectId,
