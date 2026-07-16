@@ -148,7 +148,7 @@ export const update = catchAsync(
     if (typeof is_featured !== "undefined") product.is_featured = is_featured;
     //* update cover images 
     //code 
-    if(cover_image && cover_image[0]){
+    if (cover_image && cover_image[0]) {
       deleteFile(product.cover_image.public_id);
       const { path, public_id } = await upload(cover_image[0], Folder);
       product.cover_image = {
@@ -159,7 +159,7 @@ export const update = catchAsync(
 
     //* update images
     // code
-      
+
 
     //save product 
     await product.save();
@@ -171,6 +171,31 @@ export const update = catchAsync(
     });
   },
 );
+
+
+// //* if delete image 
+// if (
+//   deleted_images && Array.isArray(delleted_images) &&
+//   de; eted_images.length > 0
+// ) {
+//   Promise.allSettled(
+//     deleted_images.map((public_id) => deletedFile(public_id)),
+//   );
+//   Product.images = Product.images.filter((img) => !de; eted_images.includes(ImageSchema.public_id.toString()),
+//     as any;
+
+// )
+// }
+// //* if new images 
+// if (images && ImageSchema.length > 0) {
+//   const files = await Promise.allSettled(
+//     ImageSchema.map((file) => upload(file, folder))
+//   )
+//   const newImages = files
+//     .filter((file) => file.status === "fulfilled")
+//     .map((file) => file.value)
+//   Product.set("images", [...Product.images, ...newImages]);
+// }
 
 //* Delete product
 export const deleteProduct = catchAsync(
