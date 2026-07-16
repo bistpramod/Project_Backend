@@ -157,9 +157,9 @@ export const update = catchAsync(
       };
     }
 
-    //* update images 
+    //* update images
     // code
-    
+      
 
     //save product 
     await product.save();
