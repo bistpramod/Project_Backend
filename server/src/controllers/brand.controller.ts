@@ -7,7 +7,7 @@ import { upload } from "../utils/cloudinary.utils";
 const uploadFolder = "/brands";
 
 export const create = catchAsync(async (req: Request, res: Response) => {
-  const { name, description } = req.body;
+  const { namethe, description } = req.body;
   // req.file / files
   const file = req.file;
   // TODO: Handle req.file / files for logo upload
@@ -59,14 +59,14 @@ export const getAllBrands = async (
   next: NextFunction,
 ) => {
   try {
-    const brands = await Brand.find();
+      const brands = await Brand.find();
 
-    res.status(200).json({
-      message: "All brands fetched",
-      status: "success",
-      success: true,
-      data: brands,
-    });
+      res.status(200).json({
+        message: "All brands fetched",
+        status: "success",
+        success: true,
+        data: brands,
+      });
   } catch (error) {
     next(error);
   }
