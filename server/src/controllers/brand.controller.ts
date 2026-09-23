@@ -8,7 +8,9 @@ const uploadFolder = "/brands";
 
 export const create = catchAsync(async (req: Request, res: Response) => {
   const { name, description } = req.body;
-  // req.file / files
+   
+
+  // update files 
   const file = req.file;
   // TODO: Handle req.file / files for logo upload
 
