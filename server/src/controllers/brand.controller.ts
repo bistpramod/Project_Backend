@@ -7,7 +7,7 @@ import { upload } from "../utils/cloudinary.utils";
 const uploadFolder = "/brands";
 
 export const create = catchAsync(async (req: Request, res: Response) => {
-  const { namethe, description } = req.body;
+  const { name, description } = req.body;
   // req.file / files
   const file = req.file;
   // TODO: Handle req.file / files for logo upload

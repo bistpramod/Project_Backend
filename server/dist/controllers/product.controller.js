@@ -143,6 +143,28 @@ exports.update = (0, catchAsync_utils_1.catchAsync)(async (req, res, next) => {
         data: product,
     });
 });
+// //* if delete image 
+// if (
+//   deleted_images && Array.isArray(delleted_images) &&
+//   de; eted_images.length > 0
+// ) {
+//   Promise.allSettled(
+//     deleted_images.map((public_id) => deletedFile(public_id)),
+//   );
+//   Product.images = Product.images.filter((img) => !de; eted_images.includes(ImageSchema.public_id.toString()),
+//     as any;
+// )
+// }
+// //* if new images 
+// if (images && ImageSchema.length > 0) {
+//   const files = await Promise.allSettled(
+//     ImageSchema.map((file) => upload(file, folder))
+//   )
+//   const newImages = files
+//     .filter((file) => file.status === "fulfilled")
+//     .map((file) => file.value)
+//   Product.set("images", [...Product.images, ...newImages]);
+// }
 //* Delete product
 exports.deleteProduct = (0, catchAsync_utils_1.catchAsync)(async (req, res, next) => {
     const { id } = req.params;
